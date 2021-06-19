@@ -1,4 +1,4 @@
-module github.com/icelain/jokeapi
+module github.com/mihkelparna1/jokeapi
 
 go 1.16
 
