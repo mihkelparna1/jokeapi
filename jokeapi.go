@@ -2,13 +2,14 @@ package jokeapi
 
 import (
 	"encoding/json"
+	"github.com/rs/zerolog/log"
 	"io/ioutil"
 	"net/http"
 	"strings"
 )
 
 var (
-        baseURL string = "https://sv443.net/jokeapi/v2/joke/"	
+	baseURL string = "https://sv443.net/jokeapi/v2/joke/"
 )
 
 type Params struct {
@@ -31,13 +32,12 @@ type JokeAPI struct {
 	ExportedParams Params
 }
 
-func (j *JokeAPI) Fetch() JokesResp, error {
-	
-	var (
-		response = map[string]interface{}
-		mainURL string
-		isBlacklist bool = false
+func (j *JokeAPI) Fetch() (JokesResp, error) {
 
+	var (
+		response    = map[string]interface{}{}
+		mainURL     string
+		isBlacklist bool = false
 	)
 
 	//param handling begins here
@@ -63,12 +63,12 @@ func (j *JokeAPI) Fetch() JokesResp, error {
 	//param handling ends here
 	resp, err := http.Get(mainURL)
 	if err != nil {
-		return err
+		log.Err(err)
 	}
 
 	info, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return err	
+		log.Err(err)
 	}
 
 	json.Unmarshal(info, &response)
